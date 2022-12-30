@@ -9,6 +9,10 @@ on:
   # pass the necessary variables here to create the stack.
   workflow_dispatch:
     inputs:
+      region:
+        description: "AWS Region to deploy:"
+        required: true
+        default: 'us-east-1'
       bucketName:
         description: "S3 Bucket Name:"
         required: true
@@ -33,11 +37,11 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1 
+          aws-region: us-east-1
 
       - name: Deploy S3 Buckets CloudFormation Stacks
         id: s3-buckets
-        uses: aws-actions/aws-cloudformation-github-deploy@v1.0.3
+        uses: aws-actions/aws-cloudformation-github-deploy@v1
         with:
           name:  s3-buckets
           template: s3.yaml
