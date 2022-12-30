@@ -1,0 +1,51 @@
+name: Deploy CloudFormation Stacks
+
+# Controls when the action will run.
+on:
+  push:
+    branches: [ master ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  # pass the necessary variables here to create the stack.
+  workflow_dispatch:
+    inputs:
+      region:
+        description: "AWS Region"
+        required: true
+        default: "us-east-1"
+      bucketName:
+        description: "S3 Bucket Name"
+        required: true
+        default: 'sam-deployment-usecase'
+      deploymentEnv:
+        description: "dev/qa/prod"
+        required: true
+        default: 'dev'
+         
+
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  dev-deployment:
+    runs-on: ubuntu-latest
+    environment: dev
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        
+      - name: Configure AWS credentials
+        id: creds
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ github.event.inputs.region }} 
+
+      - name: Deploy S3 Buckets CloudFormation Stacks
+        id: s3-buckets
+        uses: aws-actions/aws-cloudformation-github-deploy@v1.0.3
+        with:
+          name:  s3-buckets
+          template: s3.yml
+          parameter-overrides: >-
+            BucketName=${{ github.event.inputs.bucketName }}-${{ github.event.inputs.deploymentEnv }}
