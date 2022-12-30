@@ -11,7 +11,7 @@ on:
     inputs:
       region:
         description: "AWS Region"
-        required: true
+        required: false
         default: "us-east-1"
       bucketName:
         description: "S3 Bucket Name"
@@ -19,11 +19,9 @@ on:
         default: 'sam-deployment-usecase'
       deploymentEnv:
         description: "dev/qa/prod"
-        required: true
+        required: false
         default: 'dev'
          
-
-
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   dev-deployment:
@@ -46,6 +44,6 @@ jobs:
         uses: aws-actions/aws-cloudformation-github-deploy@v1.0.3
         with:
           name:  s3-buckets
-          template: s3.yml
+          template: s3.yaml
           parameter-overrides: >-
             BucketName=${{ github.event.inputs.bucketName }}-${{ github.event.inputs.deploymentEnv }}
