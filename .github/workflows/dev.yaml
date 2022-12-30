@@ -11,7 +11,7 @@ on:
     inputs:
       region:
         description: "AWS Region"
-        required: false
+        required: true
         default: "us-east-1"
       bucketName:
         description: "S3 Bucket Name"
@@ -19,7 +19,7 @@ on:
         default: 'sam-deployment-usecase'
       deploymentEnv:
         description: "dev/qa/prod"
-        required: false
+        required: true
         default: 'dev'
          
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
