@@ -7,20 +7,20 @@ on:
 
   # Allows you to run this workflow manually from the Actions tab
   # pass the necessary variables here to create the stack.
-  workflow_dispatch:
-    inputs:
-      region:
-        description: "AWS Region to deploy:"
-        required: true
-        default: 'us-east-1'
-      bucketName:
-        description: "S3 Bucket Name:"
-        required: true
-        default: 'sam-deployment-usecase'
-      deploymentEnv:
-        description: "dev/qa/prod:"
-        required: true
-        default: 'dev'
+  #workflow_dispatch:
+  #  inputs:
+  #    region:
+  #      description: "AWS Region to deploy:"
+  #      required: true
+  #      default: 'us-east-1'
+  #    bucketName:
+  #      description: "S3 Bucket Name:"
+  #     required: true
+  #      default: 'sam-deployment-usecase'
+  #    deploymentEnv:
+  #      description: "dev/qa/prod:"
+  #      required: true
+  #      default: 'dev'
          
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -46,5 +46,4 @@ jobs:
           name:  s3-buckets
           template: s3.yaml
           no-fail-on-empty-changeset: "1"
-          parameter-overrides: >-
-            BucketName=${{ github.event.inputs.bucketName }}-${{ github.event.inputs.deploymentEnv }}
+          parameter-overrides: https://github.com/vamshikrish007/cicd-deploy-s3-bucket-using-git-actions/blob/main/dev_param.json
